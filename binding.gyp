@@ -19,7 +19,12 @@
             'include_dirs+':
             [
               # Not needed now
-            ]
+            ],
+            'msvs_settings': {
+              'VCCLCompilerTool': {
+                'RuntimeLibrary': '0',  # /MT
+              }
+            }
           }
         ],
         ['OS=="mac"',
