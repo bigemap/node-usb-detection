@@ -1,6 +1,6 @@
 {
   "name": "@bigemap/usb-detection",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Listen to USB devices and detect changes on them.",
   "main": "index.js",
   "types": "index.d.ts",
