@@ -19,6 +19,9 @@ env:
   - TRAVIS_NODE_VERSION="6" ARCH="x86"
   - BINARY_BUILDER="true" TRAVIS_NODE_VERSION="8"
   - BINARY_BUILDER="true" TRAVIS_NODE_VERSION="8" ARCH="x86"
+  - BINARY_BUILDER="true" TRAVIS_NODE_VERSION="10"
+  - BINARY_BUILDER="true" TRAVIS_NODE_VERSION="12"
+  - BINARY_BUILDER="true" TRAVIS_NODE_VERSION="13"
 matrix:
   exclude:
   - os: osx
@@ -54,10 +57,6 @@ before_install:
   fi;
 - $CXX --version
 
-# Cleanup the output of npm
-- npm config set progress false
-- npm config set spin false
-
 # print versions
 - uname -a
 - which node; file `which node`
@@ -74,9 +73,11 @@ before_install:
 
 install:
 # ensure source install works
-- npm install --build-from-source
+- npm install --build-from-source --no-progress
 
 script:
+- npm run lint
+
 # Tests are disabled until we have tests which are suitable for CI and don't require manual interaction.
 # - npm test
 - echo "Skipping tests on CI, as they currently require manual interaction."

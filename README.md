@@ -11,9 +11,30 @@
 
 # Install
 
-```
+```sh
 npm install usb-detection
 ```
+
+## Install for Electron
+
+This module uses native extensions and needs to be compiled for your target version of Electron. Precompiled binaries for recent Node.js and Electron versions are built and published using [prebuild][] and can be installed automatically using [electron-rebuild][].
+
+See the [Electron docs for using native modules][electron-native-modules] to ensure your project is set up to correctly use the prebuilt binaries for your version of Electron.
+
+[prebuild]: https://github.com/prebuild/prebuild
+[electron-rebuild]: https://github.com/electron/electron-rebuild
+[electron-native-modules]: https://www.electronjs.org/docs/tutorial/using-native-node-modules
+
+---
+
+If you run into the following error, here are the exact steps you can use:
+
+```
+detection.node was compiled against a different Node.js version using NODE_MODULE_VERSION 72. This version of Node.js requires NODE_MODULE_VERSION 80. Please try re-compiling or re-installing 
+```
+
+ 1. `npm i electron-rebuild --save-dev`
+ 1. `./node_modules/.bin/electron-rebuild`
 
 
 # Usage
@@ -172,21 +193,12 @@ usbDetect.startMonitoring();
 usbDetect.stopMonitoring();
 ```
 
+### `usbDetect.find()` always returns the same list of devices, even after removal.
 
-# Development (compile from source)
-
-This assumes you also have everything on your system necessary to compile ANY native module for Node.js. This may not be the case, though, so please ensure the following requirements are satisfied before filing an issue about "Does not install". For all operating systems, please ensure you have Python 2.x installed AND not 3.0, [node-gyp](https://github.com/TooTallNate/node-gyp) (what we use to compile) requires Python 2.x.
+Make sure you call `usbDetect.startMonitoring()` before any calls to `usbDetect.find()`.
 
 
-### Windows:
-
- - Visual Studio 2013/2015 Community
- - Visual Studio 2010
- - Visual C++ Build Tools 2015: https://github.com/nodejs/node-gyp/issues/629#issuecomment-153196245
-
-If you are having problems building, [please read this](https://github.com/TooTallNate/node-gyp/issues/44).
-
-#### `npm run rebuild` -> `The system cannot find the path specified.`
+### `npm run rebuild` -> `The system cannot find the path specified.`
 
 If you are running into the `The system cannot find the path specified.` error when running `npm run rebuild`,
 make sure you have Python 2 installed and on your PATH.
@@ -205,9 +217,31 @@ create a symlink called `python2.exe` via `mklink "C:\Python27\python2.exe" "C:\
 and add the directory to your path.
 
 
+### To build a debug version with error outputs use:
+
+```sh
+$ npm run rebuild --debug
+```
+
+
+# Development (compile from source)
+
+This assumes you also have everything on your system necessary to compile ANY native module for Node.js. This may not be the case, though, so please ensure the following requirements are satisfied before filing an issue about "Does not install". For all operating systems, please ensure you have Python 2.x installed AND not 3.0, [node-gyp](https://github.com/TooTallNate/node-gyp) (what we use to compile) requires Python 2.x.
+
+
+### Windows:
+
+ - Visual Studio 2013/2015 Community
+ - Visual Studio 2010
+ - Visual C++ Build Tools 2015: https://github.com/nodejs/node-gyp/issues/629#issuecomment-153196245
+
+If you are having problems building, [please read this](https://github.com/TooTallNate/node-gyp/issues/44).
+
+
 ### Mac OS X:
 
 Ensure that you have at a minimum, the xCode Command Line Tools installed appropriate for your system configuration. If you recently upgraded your OS, it probably removed your installation of Command Line Tools, please verify before submitting a ticket.
+
 
 ### Linux:
 
@@ -215,15 +249,16 @@ You know what you need for you system, basically your appropriate analog of buil
 
 To compile and install native addons from npm you may also need to install build tools *([source](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#debian-and-ubuntu-based-linux-distributions))*:
 
-```
+```sh
 sudo apt-get install -y build-essential
 ```
 
 Also install libudev:
 
-```
+```sh
 sudo apt-get install libudev-dev
 ```
+
 
 
 # Testing
